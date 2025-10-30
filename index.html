@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G MONAD - The Biggest Meme Coin on Monad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .image-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-auto-rows: 200px;
+            gap: 0;
+            z-index: 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 40px;
+            max-width: 700px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 15px 25px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .email-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .email-input:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .join-button {
+            padding: 15px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 3;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-auto-rows: 150px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .email-form {
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .social-links {
+                bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-auto-rows: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="image-grid" id="imageGrid"></div>
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1>G MONAD</h1>
+        <p class="subtitle">
+            G Monad is one of the first memes to emerge from the Monad community.
+            We are deeply aligned with Monad's culture and vision.
+            Supported by Monad, the community, and key ecosystem partners,
+            G Monad is leading the charge within the Monad trenches and is
+            destined to become the mascot of the chain.
+        </p>
+
+        <form class="email-form" onsubmit="handleSubmit(event)">
+            <input
+                type="email"
+                class="email-input"
+                placeholder="Email Address"
+                required
+            />
+            <button type="submit" class="join-button">Join</button>
+        </form>
+    </div>
+
+    <div class="social-links">
+        <a href="#" class="social-link" title="Twitter">𝕏</a>
+        <a href="#" class="social-link" title="Discord">💬</a>
+    </div>
+
+    <script>
+        // Image filenames
+        const images = [
+            'IMG_5072.JPEG',
+            'image_2025-07-13_17-59-28.png',
+            'image_2025-07-15_17-50-26.png',
+            'IMG_5134.JPEG',
+            'IMG_5141.JPEG',
+            'image_2025-07-17_18-32-34.png',
+            'IMG_5179.JPEG',
+            'IMG_5183.JPEG',
+            'IMG_5194.JPG',
+            'when_my_message_is_so_interesting_,_bill_reading_it_for_3_days_2.png',
+            'image_2025-07-27_02-46-58.png',
+            'u4517688866_remove_the_logo_ar_5877_stylize_250_v_7_6e32faba_39c8.png',
+            'image_2025-08-06_16-08-40.png',
+            'ddddddddd.png',
+            'u4517688866_httpss_mj_runpItxFNSSG0c_fix_the_fingers_ar_5877_363b3a42.png',
+            'u4517688866_httpss_mj_runnESE_ZGc4sY_fix_ar_5877_stylize_25_2796a265.png',
+            'image_2025-08-12_15-35-42.png',
+            'image_2025-08-16_16-49-39.png',
+            'Heading (11).png',
+            'image_2025-08-16_16-51-59.png',
+            'Untitled design (1).png',
+            'image_2025-08-16_16-52-27.png',
+            'Untitled design (5).png',
+            'image_2025-08-19_02-20-35.png',
+            'image_2025-08-19_23-44-03.png',
+            'image_2025-08-20_17-50-08.png',
+            'image_2025-08-20_19-46-35.png',
+            'image_2025-09-03_13-24-01.png',
+            'image_2025-09-05_00-47-30.png',
+            'u4517688866_fix_it_ar_11_profile_h9mjv77_v_7_abef1803_682f_48a3.png',
+            'when_my_message_is_so_interesting_,_bill_reading_it_for_3_days_18.png',
+            'u4517688866_fix_it_ar_5877_profile_h9mjv77_v_7_79691067_b1e5_4c24.png',
+            'when_my_message_is_so_interesting_,_bill_reading_it_for_3_days_59.png',
+            'when_my_message_is_so_interesting_,_bill_reading_it_for_3_days_60.png',
+            'image_2025-09-28_23-44-33.png',
+            'u4517688866_A_stylized_character_resembling_a_purple_skinned_Pe.png',
+            'image_2025-10-01_14-28-47.png',
+            'image_2025-10-01_14-52-33.png',
+            'image_2025-10-01_15-07-50.png',
+            'image_2025-10-01_15-54-19.png',
+            'image_2025-10-01_21-17-33.png',
+            'image_2025-10-10_18-21-57.png',
+            'image_2025-10-11_01-23-55.png',
+            'image_2025-10-27_17-37-14.png',
+            'image_2025-10-27_17-02-20.png',
+            'image_2025-10-27_17-02-47.png',
+            'image_2025-10-27_17-12-56.png'
+        ];
+
+        // Shuffle and populate images
+        const imageGrid = document.getElementById('imageGrid');
+        const shuffled = [...images].sort(() => Math.random() - 0.5);
+
+        shuffled.forEach(img => {
+            const imgElement = document.createElement('img');
+            imgElement.src = img;
+            imgElement.alt = 'G MONAD Meme';
+            imgElement.loading = 'lazy';
+            imageGrid.appendChild(imgElement);
+        });
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input').value;
+            alert('Thanks for joining! Email: ' + email);
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
