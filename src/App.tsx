@@ -1,13 +1,54 @@
-import { useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BentoGrid } from './components/BentoGrid';
-import { ArrowRight, Twitter } from 'lucide-react';
-import { Button } from './components/ui/button';
-import { Input } from './components/ui/input';
+import { Twitter } from 'lucide-react';
 import { Toaster } from './components/ui/sonner';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
+import { XAuthButton } from './components/XAuthButton';
+import { ReferralButton } from './components/ReferralButton';
+import { useAuth } from './contexts/AuthContext';
 
 export default function App() {
-  const [email, setEmail] = useState('');
+  const { user, session } = useAuth();
+  const hasShownWelcome = useRef(false);
+
+  // Show success message when user logs in (only once) and handle errors
+  useEffect(() => {
+    // Check for OAuth errors in URL
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const error = hashParams.get('error');
+    const errorDescription = hashParams.get('error_description');
+    
+    if (error && !hasShownWelcome.current) {
+      // Clear error from URL
+      window.history.replaceState(null, '', window.location.pathname);
+      
+      if (errorDescription?.includes('email')) {
+        toast.error('Twitter authentication requires email access. Please check your Twitter app permissions.');
+      } else {
+        toast.error(`Authentication error: ${errorDescription || error}`);
+      }
+      hasShownWelcome.current = true;
+      return;
+    }
+    
+    if (user && session && !hasShownWelcome.current) {
+      const username = user.user_metadata?.user_name || user.user_metadata?.full_name || 'User';
+      toast.success(`Welcome, ${username}! You're now part of G Monad.`);
+      
+      // Log user data to console for debugging
+      console.log('✅ User connected:', {
+        id: user.id,
+        email: user.email || 'No email (Twitter may not provide it)',
+        username: user.user_metadata?.user_name,
+        name: user.user_metadata?.full_name,
+        avatar: user.user_metadata?.avatar_url,
+        provider: user.app_metadata?.provider,
+        raw: user,
+      });
+      
+      hasShownWelcome.current = true;
+    }
+  }, [user, session]);
 
   // All 47 image filenames from public/images folder
   const images = [
@@ -60,14 +101,6 @@ export default function App() {
     '/images/when_my_message_is_so_interesting_,_bill_reading_it_for_3_days_60.png'
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      toast.success(`Thank you! ${email} has been added to the waitlist.`);
-      setEmail('');
-    }
-  };
-
   return (
     <>
       <Toaster position="top-center" />
@@ -106,47 +139,10 @@ export default function App() {
             </p>
           </div>
 
-          {/* CTA Card */}
-          <div className="max-w-xl mx-auto animate-fade-in-up delay-4 px-4">
-            <div className="relative">
-              {/* Glow Effect */}
-              <div className="glow-effect" />
-
-              {/* Card */}
-              <div 
-                className="relative bg-black/50 border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl"
-                style={{ backdropFilter: 'blur(24px)' }}
-              >
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label className="text-white/70 text-sm block text-left">
-                      Join the waitlist
-                    </label>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/10 border border-white/20 text-white rounded-xl h-14 px-5 transition-all duration-300 hover:bg-white/15 focus:bg-white/15 focus:border-white/40 placeholder:text-white/40"
-                      style={{ backdropFilter: 'blur(8px)' }}
-                      required
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="btn-gradient-hover w-full bg-white text-black h-14 rounded-xl gap-2 group shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <span>Get Early Access</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </form>
-
-                <p className="text-white/50 text-xs mt-4 text-center">
-                  Join 10,000+ community members already onboard
-                </p>
-              </div>
-            </div>
+          {/* Connect Button & Referral Button */}
+          <div className="flex justify-center items-center gap-3 animate-fade-in-up delay-4 flex-wrap">
+            <XAuthButton />
+            <ReferralButton />
           </div>
 
           {/* Social Links */}
