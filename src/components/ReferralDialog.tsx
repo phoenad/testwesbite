@@ -18,10 +18,6 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Debug: Log when dialog opens
-  useEffect(() => {
-    console.log('🎯 Dialog open state:', open);
-  }, [open]);
 
   // Generate or get referral code for user
   useEffect(() => {

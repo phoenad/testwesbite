@@ -22,7 +22,6 @@ export function XAuthButton() {
     // Store referral code from input to localStorage before connecting
     if (referralCode.trim()) {
       localStorage.setItem('referral_code', referralCode.trim().toUpperCase());
-      console.log('📌 Referral code stored from input:', referralCode.trim().toUpperCase());
     }
     
     try {
@@ -87,13 +86,13 @@ export function XAuthButton() {
   return (
     <div className="flex flex-col items-center gap-3 w-full max-w-md">
       {/* Referral Code Input */}
-      <div className="w-full">
+      <div className="w-full flex justify-center">
         <Input
           type="text"
           placeholder="Enter referral code (optional)"
           value={referralCode}
           onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-          className="w-full px-4 py-3 bg-white/10 text-white border border-white/20 rounded-full placeholder:text-white/50 focus:bg-white/20 focus:border-white/40 transition-all duration-300"
+          className="w-max px-4 py-3 bg-white/10 text-white border border-white/20 rounded-full placeholder:text-white/50 focus:bg-white/20 focus:border-white/40 transition-all duration-300 max-w-md rounded-xl"
         />
       </div>
 

@@ -39,7 +39,6 @@ export function ReferralButton() {
         .maybeSingle();
 
       if (fetchError && fetchError.code !== 'PGRST116') {
-        console.error('Error fetching referral code:', fetchError);
         return;
       }
 

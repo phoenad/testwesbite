@@ -25,7 +25,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (refCode) {
       // Store referral code in localStorage
       localStorage.setItem('referral_code', refCode);
-      console.log('📌 Referral code stored:', refCode);
     }
   }, []);
 
@@ -50,8 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email);
-      
       // Update session/user immediately, don't wait for referral processing
       setSession(session);
       setUser(session?.user ?? null);
@@ -93,26 +90,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const processReferral = async (newUser: User) => {
     const referralCode = localStorage.getItem('referral_code');
     
-    console.log('🔍 Processing referral for user:', newUser.id);
-    console.log('📌 Referral code from localStorage:', referralCode);
-    
     if (!referralCode) {
-      console.log('❌ No referral code found in localStorage');
       return;
     }
 
     try {
       const codeUpper = referralCode.toUpperCase().trim();
-      console.log('🔍 Searching for referral code:', codeUpper);
-      
-      // First, try to find ANY row with this referral code (to debug)
-      const { data: allCodes, error: allCodesError } = await supabase
-        .from('referral')
-        .select('id, referrer_id, referee_id, referral_code, username')
-        .eq('referral_code', codeUpper);
-      
-      console.log('🔍 All rows with this code:', allCodes);
-      console.log('🔍 Error (if any):', allCodesError);
 
       // Find the referrer by referral code (get referrer_id and username)
       const { data: referralData, error: findError } = await supabase
@@ -122,34 +105,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .is('referee_id', null) // Get the initial referral code row (not the awarded points row)
         .maybeSingle();
 
-      console.log('🔍 Query result:', referralData);
-      console.log('🔍 Query error:', findError);
-
       if (findError) {
-        console.error('❌ Error finding referral code:', findError);
-        console.error('❌ Error code:', findError.code);
-        console.error('❌ Error message:', findError.message);
+        console.error('Error finding referral code:', findError);
         localStorage.removeItem('referral_code');
         return;
       }
 
       if (!referralData) {
-        console.log('❌ Referral code not found or invalid:', codeUpper);
-        console.log('❌ This might be due to:');
-        console.log('   1. No row with this code and referee_id = null');
-        console.log('   2. RLS policy blocking the query');
-        console.log('   3. Code was already used');
         localStorage.removeItem('referral_code');
         return;
       }
-
-      console.log('✅ Found referral data:', referralData);
 
       const referrerId = referralData.referrer_id;
 
       // Don't allow self-referral
       if (referrerId === newUser.id) {
-        console.log('Self-referral not allowed');
         localStorage.removeItem('referral_code');
         return;
       }
@@ -163,7 +133,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (existing) {
-        console.log('Referral already processed');
         localStorage.removeItem('referral_code');
         return;
       }
@@ -176,35 +145,75 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Validate user ID
       if (!newUser.id) {
-        console.error('❌ Invalid user ID:', newUser.id);
         return;
       }
       
-      console.log('📝 Updating referral with referee_id:', newUser.id);
-      
-      // UPDATE the existing referral code row instead of inserting a new one
-      // This awards points to both referrer and referee
-      const { data: updatedData, error: updateError } = await supabase
+      // Step 1: UPDATE the referrer's row - give them points_awarded
+      const { error: updateError } = await supabase
         .from('referral')
         .update({
           referee_id: newUser.id, // Set the referee's user ID
           points_awarded: 10, // 10 points for referrer (person who shared the link)
-          referee_points: 10, // 10 points for referee (person who just connected)
-          // Keep the existing username (referrer's username)
         })
         .eq('referral_code', codeUpper)
-        .is('referee_id', null) // Only update rows that haven't been used yet
-        .select()
-        .single();
+        .is('referee_id', null); // Only update rows that haven't been used yet
 
       if (updateError) {
-        console.error('❌ Error updating referral:', updateError);
-        console.error('❌ Error details:', JSON.stringify(updateError, null, 2));
-      } else {
-        console.log('✅ Referral processed! 10 points awarded to both referrer and referee');
-        console.log('✅ Updated data:', updatedData);
-        localStorage.removeItem('referral_code');
+        console.error('❌ Error updating referrer points:', updateError);
+        return;
       }
+
+      // Step 2: Check if referee already has a referral row, if not create one
+      const { data: refereeRow, error: checkError } = await supabase
+        .from('referral')
+        .select('id')
+        .eq('referrer_id', newUser.id)
+        .is('referee_id', null)
+        .maybeSingle();
+
+      // Step 3: INSERT or UPDATE referee's row with referee_points
+      if (!refereeRow) {
+        // Create new row for referee with their own referral code
+        const refereeCode = newUser.id.substring(0, 8).toUpperCase().replace(/-/g, '');
+        const { error: insertError } = await supabase
+          .from('referral')
+          .insert({
+            referrer_id: newUser.id,
+            referral_code: refereeCode,
+            referee_points: 10, // 10 points for using a referral code
+            username: refereeUsername,
+            points_awarded: 0, // They haven't shared any codes yet
+          });
+
+        if (insertError) {
+          console.error('Error creating referee row:', insertError);
+        }
+      } else {
+        // Update existing referee row - add to their referee_points
+        const { data: existingReferee, error: getExistingError } = await supabase
+          .from('referral')
+          .select('referee_points')
+          .eq('referrer_id', newUser.id)
+          .is('referee_id', null)
+          .single();
+
+        const currentRefereePoints = existingReferee?.referee_points || 0;
+        const newRefereePoints = currentRefereePoints + 10;
+
+        const { error: updateRefereeError } = await supabase
+          .from('referral')
+          .update({
+            referee_points: newRefereePoints,
+          })
+          .eq('referrer_id', newUser.id)
+          .is('referee_id', null);
+
+        if (updateRefereeError) {
+          console.error('Error updating referee points:', updateRefereeError);
+        }
+      }
+
+      localStorage.removeItem('referral_code');
     } catch (error) {
       console.error('Error processing referral:', error);
     }
