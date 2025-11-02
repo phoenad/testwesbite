@@ -1,69 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import { useRef } from 'react';
 import { FaXTwitter, FaDiscord, FaTelegram, FaEnvelope } from 'react-icons/fa6';
 
 export default function App() {
-  const contentRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const socialRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Animated text entrance with memecoin energy
-    const ctx = gsap.context(() => {
-      // Main content fade in
-      gsap.from(contentRef.current, {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-
-      // Logo animation
-      gsap.from(logoRef.current, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.6,
-        delay: 0.1,
-        ease: 'back.out(1.7)',
-      });
-
-      // Heading animation with bounce
-      gsap.from(headingRef.current, {
-        opacity: 0,
-        y: -30,
-        scale: 0.95,
-        duration: 0.7,
-        delay: 0.2,
-        ease: 'power3.out',
-      });
-
-      // Text blocks stagger animation
-      if (textRef.current) {
-        const paragraphs = textRef.current.querySelectorAll('p');
-        gsap.from(paragraphs, {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          stagger: 0.15,
-          delay: 0.4,
-          ease: 'power2.out',
-        });
-      }
-
-      // Social links animation
-      gsap.from(socialRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 0.8,
-        ease: 'power2.out',
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <>
@@ -136,12 +75,11 @@ export default function App() {
       </div>
 
       {/* Main Content - Full screen with padding */}
-      <div ref={contentRef} className="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-20">
+      <div className="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-20">
         <div className="text-center space-y-16 sm:space-y-24 md:space-y-32 lg:space-y-40 max-w-6xl mx-auto">
 
           {/* Main Heading - AKONY Font */}
           <h1
-            ref={headingRef}
             className="font-black tracking-wider bg-gradient-to-r from-yellow-300 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse leading-none uppercase"
             style={{
               fontFamily: "'AKONY', sans-serif",
@@ -153,20 +91,20 @@ export default function App() {
             GMONAD
           </h1>
 
-          {/* Description Text - Professional Typography */}
-          <div ref={textRef} className="space-y-6 sm:space-y-8 md:space-y-10 max-w-5xl mx-auto px-2">
+          {/* Description Text - Consistent Typography */}
+          <div className="space-y-6 sm:space-y-8 md:space-y-10 max-w-5xl mx-auto px-2">
 
             {/* First paragraph */}
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium text-white/95 leading-relaxed">
+            <p className="text-base sm:text-lg font-medium text-white/95 leading-relaxed">
               Born from the Monad community's ethos of <span className="text-yellow-300 font-bold">"community first,"</span> Gmonad is the original meme that became a movement. What started as a spark of shared belief has grown into a <span className="text-purple-400 font-bold">cultural phenomenon</span> with <span className="text-pink-400 font-black">1B+ impressions</span> across the monad ecosystem and mentions from Phantom, MetaMask, OpenSea, OKX, Magic Eden, and CT legends like Hsaka, Ansem, InverseBrah, Deeze, and more.
             </p>
 
-            {/* Second paragraph - Highlighted */}
+            {/* Second paragraph - Consistent size */}
             <div className="space-y-4 sm:space-y-6 py-4 sm:py-6">
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-white leading-relaxed">
+              <p className="text-base sm:text-lg font-medium text-white leading-relaxed">
                 Fueled by pure <span className="text-purple-400 font-bold">community energy</span> and a <span className="text-pink-400 font-bold">cult-like following</span>, Gmonad isn't just a meme.
               </p>
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black bg-gradient-to-r from-yellow-300 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wide leading-tight">
+              <p className="text-base sm:text-lg font-medium text-white leading-relaxed">
                 It's the official community token of Monad and the soul of its culture.
               </p>
               <p></p>
@@ -197,7 +135,7 @@ export default function App() {
           </div>
 
           {/* Social Links - Professional Design */}
-          <div ref={socialRef} className="flex items-center justify-center gap-4 sm:gap-6 pt-8 sm:pt-12 mt-4 sm:mt-8">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 pt-8 sm:pt-12 mt-4 sm:mt-8">
 
             {/* Twitter/X */}
             <a
