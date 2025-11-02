@@ -169,8 +169,33 @@ export default function App() {
               <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black bg-gradient-to-r from-yellow-300 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wide leading-tight">
                 It's the official community token of Monad and the soul of its culture.
               </p>
+              <p>
+                </p>
+              
             </div>
 
+          </div>
+
+          {/* Coming Soon Badge */}
+          <div className="flex justify-center items-center pt-32 sm:pt-40 md:pt-48">
+            <div className="relative inline-flex">
+              {/* Subtle glow */}
+              <div className="absolute inset-0 bg-purple-500/30 rounded-full blur-xl"></div>
+
+              {/* Badge container */}
+              <div className="relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+                {/* Pulse dot */}
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-400"></span>
+                </span>
+
+                {/* Text */}
+                <span className="text-base sm:text-lg font-semibold text-white whitespace-nowrap">
+                  Coming soon on <span className="font-bold text-purple-300">Monad</span>
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Social Links - Professional Design */}
