@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, CheckCircle2, Share2, Gift } from 'lucide-react';
+import { Copy, CheckCircle2, Gift } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,7 +17,6 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
   const [points, setPoints] = useState<number>(0);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
-
 
   // Generate or get referral code for user
   useEffect(() => {
@@ -140,31 +139,13 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
     }
   };
 
-  const handleShare = async () => {
-    if (!referralLink) return;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Join G Monad',
-          text: 'Join me on G Monad!',
-          url: referralLink,
-        });
-      } catch (error) {
-        // User cancelled share
-      }
-    } else {
-      handleCopy();
-    }
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-black/95 border border-white/20 text-white z-[9999] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-md bg-black/95 border border-white/20 text-white z-[9999]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Gift className="w-5 h-5 text-yellow-400" />
-            Referral Links
+            Referral Link
           </DialogTitle>
           <DialogDescription className="text-white/70">
             Share your link and earn 10 points for each person who joins!
@@ -173,7 +154,7 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
 
         <div className="space-y-4 py-4">
           {/* Points Display */}
-          <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+          {/* <div className="bg-white/10 rounded-lg p-4 border border-white/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white/70">Total Points Earned</p>
@@ -181,21 +162,20 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
               </div>
               <Gift className="w-8 h-8 text-yellow-400" />
             </div>
-          </div>
+          </div> */}
 
           {/* Referral Link */}
           <div className="space-y-2">
-            <label className="text-sm text-white/70">Your Referral Link</label>
             {loading ? (
               <div className="h-12 bg-white/10 rounded-lg animate-pulse" />
             ) : (
               <div className="flex gap-2">
                 <div className="flex-1 bg-white/10 rounded-lg p-3 border border-white/20">
-                  <p className="text-sm font-mono break-all">{referralLink || 'Generating...'}</p>
+                  <p className="text-sm font-mono break-all text-white">{referralLink || 'Generating...'}</p>
                 </div>
                 <Button
                   onClick={handleCopy}
-                  className="px-4 bg-white/10 hover:bg-white/20 border border-white/20"
+                  className="px-4 mt-1 bg-white/10 hover:bg-white/20 border border-white/20"
                 >
                   {copied ? (
                     <CheckCircle2 className="w-4 h-4 text-green-400" />
@@ -205,23 +185,6 @@ export function ReferralDialog({ open, onOpenChange }: ReferralDialogProps) {
                 </Button>
               </div>
             )}
-          </div>
-
-          {/* Share Button */}
-          <Button
-            onClick={handleShare}
-            className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:from-yellow-300 hover:to-orange-400 font-medium"
-            disabled={!referralLink || loading}
-          >
-            <Share2 className="w-4 h-4 mr-2" />
-            Share Referral Link
-          </Button>
-
-          {/* Info */}
-          <div className="bg-blue-500/20 border border-blue-500/50 rounded-lg p-3">
-            <p className="text-xs text-blue-300">
-              💡 Each friend who signs up using your link earns you 10 points!
-            </p>
           </div>
         </div>
       </DialogContent>
