@@ -169,9 +169,7 @@ export default function App() {
               <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black bg-gradient-to-r from-yellow-300 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wide leading-tight">
                 It's the official community token of Monad and the soul of its culture.
               </p>
-              <p>
-                </p>
-              
+              <p></p>
             </div>
 
           </div>
