@@ -1,9 +1,6 @@
-import { useRef } from 'react';
 import { FaXTwitter, FaDiscord, FaTelegram, FaEnvelope } from 'react-icons/fa6';
 
 export default function App() {
-  const logoRef = useRef<HTMLDivElement>(null);
-
   return (
     <>
       <style>{`
@@ -63,15 +60,6 @@ export default function App() {
           }}
         />
         <div className="absolute inset-0 bg-black/40" />
-      </div>
-
-      {/* Logo - Top Left */}
-      <div ref={logoRef} className="absolute top-4 left-4 sm:top-8 sm:left-8 z-30">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl shadow-purple-500/40 animate-pulse">
-            <span className="text-white text-2xl sm:text-3xl md:text-4xl font-black">G</span>
-          </div>
-        </div>
       </div>
 
       {/* Main Content - Full screen with padding */}
