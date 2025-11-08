@@ -137,9 +137,12 @@ export function Home() {
 
         {/* G MONAD Heading - Top Center */}
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-20">
-          <h1 className="text-2xl sm:text-3xl font-black tracking-wider uppercase">
-            GMONAD
-          </h1>
+          <div className="text-center">
+            <h1 className="text-4xl sm:text-5xl font-black tracking-wider uppercase text-white mb-2 drop-shadow-lg">
+              GMONAD
+            </h1>
+            <div className="h-1 w-24 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full"></div>
+          </div>
         </div>
 
         {/* User Profile - Top Right */}
@@ -170,12 +173,12 @@ export function Home() {
                 <div className="flex flex-col items-center gap-6 animate-fade-in-up delay-4">
                   {/* User Rank Display */}
                   {userRank !== null && (
-                    <div className="text-center mb-2">
-                      <p className="text-lg sm:text-xl text-white">
+                    <div className="text-center mb-4">
+                      <p className="text-xl sm:text-2xl text-white font-medium">
                         You're{' '}
                         <span className="text-pink-400 font-bold">#{userRank}</span>
                         {totalParticipants > 0 && (
-                          <span className="text-white/70 text-sm sm:text-base">
+                          <span className="text-white/70 text-base sm:text-lg">
                             {' '}out of {totalParticipants.toLocaleString()}
                           </span>
                         )}
@@ -194,7 +197,7 @@ export function Home() {
                       
                       {/* View Leaderboard Button - Full Width at Bottom */}
                       <Link to="/leaderboard" className="w-full">
-                        <button className="w-full p-3 text-sm font-medium text-white bg-black/30 border-t border-white/5 rounded-b-xl hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+                        <button className="w-full p-3 text-sm font-medium text-white bg-black/50 border-t border-white/5 rounded-b-xl hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
                           <span>View Leaderboard</span>
                           <ArrowBigRight className="w-4 h-4" />
                         </button>

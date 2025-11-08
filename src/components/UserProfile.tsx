@@ -19,7 +19,8 @@ export function UserProfile() {
       await signOut();
       toast.success('Disconnected from X');
     } catch (error: any) {
-      toast.error('Failed to disconnect');
+      console.error('Error in handleDisconnect:', error);
+      toast.error(`Failed to disconnect: ${error?.message || 'Unknown error'}`);
     }
   };
 

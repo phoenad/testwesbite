@@ -118,6 +118,41 @@ export function TaskList() {
           is_dailycheck: data.is_dailycheck || false,
           is_dtweet: data.is_dtweet || false,
         });
+      } else {
+        // Row doesn't exist, create it as a fallback
+        const referralCode = user.id.substring(0, 8).toUpperCase().replace(/-/g, '');
+        const username = user.user_metadata?.user_name || user.user_metadata?.full_name || null;
+        
+        const { error: insertError } = await supabase
+          .from('referral')
+          .insert({
+            referrer_id: user.id,
+            referral_code: referralCode,
+            username: username,
+            points_awarded: 0,
+            referee_points: 0,
+            follow: 0,
+            tweet: 0,
+            retweet: 0,
+            like: 0,
+            comment: 0,
+            join_tg: 0,
+            daily_check: 0,
+            daily_tweet: 0,
+            is_followed: false,
+            is_tweeted: false,
+            is_retweet: false,
+            is_liked: false,
+            is_comment: false,
+            is_tg: false,
+            is_dailycheck: false,
+            is_dtweet: false,
+          });
+
+        if (insertError && insertError.code !== '23505') {
+          // 23505 is unique constraint - row might have been created by another process
+          console.error('Error creating referral row in fetchTaskCounts:', insertError);
+        }
       }
     } catch (error) {
       console.error('Error in fetchTaskCounts:', error);
@@ -516,8 +551,8 @@ export function TaskList() {
                     : isOnCooldown
                     ? 'bg-black/20 border-white/5 opacity-60 cursor-not-allowed'
                     : showVerify
-                    ? 'bg-black/30 border-white/5 cursor-default'
-                    : 'bg-black/30 border-white/5 hover:bg-black/40 hover:border-purple-400/20 cursor-pointer'
+                    ? 'bg-black/60 border-white/5 cursor-default'
+                    : 'bg-black/60 border-white/5 hover:bg-black/40 hover:border-purple-400/20 cursor-pointer'
                 }`}
               >
                 {/* Left: Icon and Task Name */}

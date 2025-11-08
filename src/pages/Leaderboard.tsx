@@ -135,18 +135,21 @@
           {/* Navigation - Top Left */}
           <div className="absolute top-6 left-6 z-20">
             <Link to="/">
-              <button className="px-4 py-2 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md text-white hover:bg-black/40 transition-all duration-300 flex items-center gap-2">
+              <button className="px-4 py-2 rounded-lg border border-white/20 bg-black/30 cursor-pointer backdrop-blur-md text-white hover:bg-black/40 transition-all duration-300 flex items-center gap-2">
                 <HomeIcon className="w-4 h-4" />
                 <span className="text-sm font-medium">Home</span>
               </button>
             </Link>
           </div>
 
-          {/* G MONAD Heading - Top Center */}
+          {/* Leaderboard Heading - Top Center */}
           <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-20">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-wider uppercase">
-              GMONAD
-            </h1>
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl font-black tracking-wider uppercase text-white mb-2 drop-shadow-lg">
+                Leaderboard
+              </h1>
+              <div className="h-1 w-24 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full"></div>
+            </div>
           </div>
 
           {/* Hero Section */}
@@ -164,11 +167,7 @@
                     <div className="rounded-xl flex flex-col">
                       {/* Header */}
                       <div className="p-3 pb-0">
-                        <div className="text-center mb-3">
-                          <h2 className="text-xl font-bold text-white mb-5">
-                            Leaderboard
-                          </h2>
-                        </div>
+                        
 
                         {/* Leaderboard Entries */}
                         <div className="space-y-2 pb-2">
@@ -188,7 +187,7 @@
                               return (
                                 <div 
                                   key={entry.referrer_id} 
-                                  className="w-full flex items-center justify-between p-2 rounded-md border border-white/5 bg-black/30 hover:bg-black/40 transition-all duration-200"
+                                  className="w-full flex items-center justify-between p-2 rounded-md border border-white/5 bg-black/70 hover:bg-black/60 transition-all duration-200"
                                 >
                                   {/* Rank and Name */}
                                   <div className="flex items-center gap-2 flex-1 min-w-0">
