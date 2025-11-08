@@ -24,20 +24,17 @@ export function UserProfile() {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-            className="px-4 py-2 bg-gray-600 text-white rounded-full gap-2 border border-white/20 hover:bg-gray-500 transition-all duration-300"
-        >
-        <CheckCircle2 className="w-4 h-4 text-green-400" />
-        <span className="text-sm font-medium">{displayName}</span>
-      </Button>
-      <Button
+    <div className="flex items-center gap-0 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md overflow-hidden">
+      <div className="px-4 py-2 flex items-center gap-2 border-r border-white/10">
+        <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
+        <span className="text-sm font-medium text-white whitespace-nowrap">{displayName}</span>
+      </div>
+      <button
         onClick={handleDisconnect}
-        className="px-4 py-2 bg-gray-500 text-white rounded-full gap-2 border border-white/20 hover:bg-gray-400 transition-all duration-300"
+        className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
       >
-        {/* <X className="w-4 h-4 text-red-400" /> */}
-        <span className="text-sm font-medium">Disconnect</span>
-      </Button>
+        Disconnect
+      </button>
     </div>
   );
 }
